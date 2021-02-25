@@ -1,6 +1,13 @@
 version: "2"
 services:
 
+    grafana:
+      image: grafana/grafana
+      ports:
+        - "3000:3000"
+      links:
+        - prometheus
+
     jaeger:
       image: jaegertracing/all-in-one:1.21
       ports:
@@ -21,6 +28,15 @@ services:
         - "8080:80"
       links:
         - jaeger
+      environment:
+        - JAEGER_SERVICE_NAME=banana
+
+    prometheus:
+      image: prom/prometheus
+      ports:
+        - "9090:9090"
+      links:
+        - mrvl-dotnet-k8s-prototype
 
     # redis:
     #   image: redis:alpine
