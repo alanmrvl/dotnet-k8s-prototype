@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
+using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Prototype.WebApi.Models;
@@ -43,6 +44,7 @@ namespace Prototype.WebApi
 
             services.AddOpenTelemetryTracing(
                 (builder) => builder
+                    .AddSource(Constants.WebApiActivitySourceName)
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ProtoType.WebApi"))
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
@@ -50,6 +52,10 @@ namespace Prototype.WebApi
                     .AddJaegerExporter(x =>
                     { 
                         x.ExportProcessorType = ExportProcessorType.Simple;
+                    })
+                    .AddConsoleExporter(x =>
+                    {
+                        x.Targets = ConsoleExporterOutputTargets.Console;
                     })
             );
         }
