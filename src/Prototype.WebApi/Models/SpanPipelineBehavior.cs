@@ -11,11 +11,10 @@ namespace Prototype.WebApi.Models
 {
     public class SpanPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        private static readonly ActivitySource ActivitySource = new ActivitySource(Constants.WebApiActivitySourceName);
+        private static readonly ActivitySource ActivitySource = new ActivitySource(Constants.ActivitySourceName);
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            //using (Activity activity = new Activity(typeof(TRequest).Name))
             using (Activity activity = ActivitySource.StartActivity(typeof(TRequest).Name))
             {                
                 return await next();

@@ -1,4 +1,4 @@
 public static class Constants
 {
-    public const string WebApiActivitySourceName = "WebApiActivitySource";
+    public static string ActivitySourceName { get; } = typeof(Constants).Assembly.GetName().Name;
 }

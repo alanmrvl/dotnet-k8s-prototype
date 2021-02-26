@@ -44,7 +44,7 @@ namespace Prototype.WebApi
 
             services.AddOpenTelemetryTracing(
                 (builder) => builder
-                    .AddSource(Constants.WebApiActivitySourceName)
+                    .AddSource(Constants.ActivitySourceName)
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ProtoType.WebApi"))
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
