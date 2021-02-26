@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Prototype.WebApi.Models;
 
 namespace Prototype.WebApi
 {
@@ -29,10 +32,21 @@ namespace Prototype.WebApi
         {
             services.AddControllers();
 
+            services.AddHttpClient("backend", x =>
+            {
+                x.BaseAddress = new Uri(@"http://localhost:8181/weatherforecast");
+            });
+
+            services.AddMediatR(typeof(Startup));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(SpanPipelineBehavior<,>));
+
             services.AddOpenTelemetryTracing(
                 (builder) => builder
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ProtoType.WebApi"))
                     .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddSqlClientInstrumentation()
                     .AddJaegerExporter(x =>
                     { 
                         x.ExportProcessorType = ExportProcessorType.Simple;
