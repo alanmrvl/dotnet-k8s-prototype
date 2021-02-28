@@ -28,9 +28,11 @@ namespace Prototype.WebApi.Controllers
         {
             var traceId = Activity.Current.TraceId.ToString();
 
-            var result = await _mediator.Send(new BackendRequest { TraceId = traceId });
+            var result1 = await _mediator.Send(new BackendRequest { TraceId = traceId });
 
-            return new[] { traceId, result };
+            var result2 = await _mediator.Send(new BackendRequest { TraceId = traceId });
+
+            return new[] { traceId, result1, result2 };
         }
     }
 }

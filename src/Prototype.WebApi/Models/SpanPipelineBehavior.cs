@@ -1,11 +1,7 @@
-using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.Extensions.Logging;
-using OpenTelemetry.Trace;
 
 namespace Prototype.WebApi.Models
 {
