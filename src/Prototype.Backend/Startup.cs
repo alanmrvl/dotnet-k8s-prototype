@@ -34,7 +34,8 @@ namespace Prototype.Backend
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("ProtoType.Backend"))
                     .AddAspNetCoreInstrumentation()
                     .AddJaegerExporter(x =>
-                    { 
+                    {
+                        x.AgentHost = "jaeger";
                         x.ExportProcessorType = ExportProcessorType.Simple;
                     })
             );

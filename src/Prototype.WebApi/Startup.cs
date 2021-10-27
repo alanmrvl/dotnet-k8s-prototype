@@ -35,7 +35,7 @@ namespace Prototype.WebApi
 
             services.AddHttpClient("backend", x =>
             {
-                x.BaseAddress = new Uri(@"http://localhost:8181/weatherforecast");
+                x.BaseAddress = new Uri(@"http://mrvl-dotnet-k8s-prototype-backend:8181/weatherforecast");
             });
 
             services.AddMediatR(typeof(Startup));
@@ -50,7 +50,8 @@ namespace Prototype.WebApi
                     .AddHttpClientInstrumentation()
                     .AddSqlClientInstrumentation()
                     .AddJaegerExporter(x =>
-                    { 
+                    {
+                        x.AgentHost = "jaeger";
                         x.ExportProcessorType = ExportProcessorType.Simple;
                     })
                     .AddConsoleExporter(x =>
